@@ -261,6 +261,20 @@ keycloak:
   enabled: true
   resources: *nubusDevelopmentResources
   replicaCount: 1
+  # -- Extra environment variables for Keycloak performance tuning.
+  # Configures JVM heap, database connection pool, and HTTP thread pool.
+  # Adjust based on deployment size and expected load.
+  extraEnvVars:
+    - name: JAVA_OPTS_APPEND
+      value: "-Xms512m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true"
+    - name: KC_DB_POOL_INITIAL_SIZE
+      value: "10"
+    - name: KC_DB_POOL_MIN_SIZE
+      value: "10"
+    - name: KC_DB_POOL_MAX_SIZE
+      value: "50"
+    - name: KC_HTTP_POOL_MAX_THREADS
+      value: "200"
   postgresql:
     auth:
       username: keycloak_user
